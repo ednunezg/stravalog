@@ -1,0 +1,185 @@
+/* Main document elements */
+
+body {
+    margin-bottom: 1em;
+    margin-top: 1em;
+    font-size: 14px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Block quote mod. Creds to https://codepen.io/maxds/pen/DcveB */
+
+blockquote{
+  display:block;
+  background: #fff;
+  padding: 15px 20px 15px 45px;
+  margin: 0 0 10px;
+  position: relative;
+  
+  /*Font*/
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  line-height: 1.2;
+  color: #666;
+  text-align: justify;
+  
+  /*Borders - (Optional)*/
+  /*
+  border-left: 15px solid #c76c0c;
+  border-right: 2px solid #c76c0c;
+  */
+  
+  /*Box Shadow - (Optional)*/
+  /*
+  -moz-box-shadow: 2px 2px 15px #a6a6a6;
+  -webkit-box-shadow: 2px 2px 15px #a6a6a6;
+  box-shadow: 2px 2px 15px #a6a6a6;
+  */
+}
+
+blockquote::before{
+  content: "\201C"; /*Unicode for Left Double Quote*/
+  
+  /*Font*/
+  font-family: Georgia, serif;
+  font-size: 60px;
+  font-weight: bold;
+  color: #999;
+  
+  /*Positioning*/
+  position: absolute;
+  left: 10px;
+  top:  5px;
+}
+
+blockquote::after{
+  /*Reset to make sure*/
+  content: "";
+}
+
+
+#calendar-nav{
+  text-align: center;
+  line-height: 1.65;
+  margin-top: 0px;
+}
+
+#calendar{
+  margin: 1em auto;
+  width: 900px;
+  background-color:#FFFFFF;
+}
+
+
+#activity-selector{
+    margin: 1em auto; 
+}
+
+
+/* Shared elements */
+
+.roundbutton{  
+  /* Size */
+  width: 35px;
+  height: 35px;
+  padding: 2px 0;
+  font-size: 12px;
+
+  /* Curvature */
+  border-radius: 30px;
+}
+
+
+/* Calendar Elements */
+
+
+  /*Inner cells*/
+
+  [class*="cal-cell"] {
+    float: left;
+    margin-left: 0;
+    min-height: 1px;
+    width: 12%;
+
+  }
+
+  .cal-cell-info {
+    float: left;
+    margin-left: 0;
+    min-height: 1px;
+    width: 16%;
+  }
+
+  .cal-cell-day {
+    min-height: 100px;
+    border-left: 1px solid #e1e1e1;
+    position: relative;
+
+
+    display: block;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    float: left;
+  }
+
+
+  .cal-cell-head {
+    font-weight: bolder;
+    text-align: center;
+    border: 0px solid;
+    padding: 5px 0;
+
+    min-height: auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Mouse hover triggers */
+
+  .cal-cell-day:hover {
+    background-color: #ededed;
+  }
+
+
+  .cal-body > .cal-row:hover{
+    background-color: #fafafa;
+  }
+
+  
+  /* Rows */
+
+  .cal-body .cal-row {
+    border-bottom: 1px solid #e1e1e1;
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+
+  /* Body */
+
+  .cal-body {
+    border-top: 1px solid #e1e1e1;
+    border-bottom: 1px solid #e1e1e1;
+    border-right: 1px solid #e1e1e1;
+    border-left: 1px solid #e1e1e1;
+    border-radius: 1px;
+  }
+
+  /* Pseudo elements */
+
+  .cal-row:before,
+  .cal-row:after {
+    display: table;
+    content: "";
+    line-height: 0;
+  }
+
+  .cal-row:after{
+    clear: both;
+  }
