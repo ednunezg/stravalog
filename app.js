@@ -2,19 +2,15 @@
 var express = require('express');
 var session = require('express-session');
 var FileStore = require('session-file-store')(session);
+var bodyParser = require('body-parser');
 var path = require('path');
 var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
 var strava = require('strava-v3')
 
 var app = express();
 app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(bodyParser.json());
 
 //Session cookies
 app.use(session({
@@ -75,16 +71,58 @@ app.get('/traininglog', function(req,res){
 	//	console.log(payload);
 	//});
   	res.render('log', {});
-})
+});
 
 app.get('/demo', function(req,res){
 	res.send("Respond with demo");
-})
+});
 
-app.get('/logout', function(req,res){ //CHANGE THIS TO POST
+app.get('/logout', function(req,res){ //TODO: CHANGE THIS TO POST
 	req.session.destroy();
 	res.redirect('/');
-})
+});
+
+app.post('/retrieve_activities', function(req,res){
+	
+	console.log("POST for receive_activities called");
+	console.log("req.body = " + req.body);
+
+	var from_date = req.body.from_date;
+	var week_id = req.body.week_id;
+
+	console.log("from_date = " + from_date);
+	console.log("num_weeks = " + week_id);
+
+	var responseData = {
+		week_id: 0,
+		total_mileage: 100,
+		total_elevation: 15245,
+		
+		monday_activities:[
+			{
+				name: "afternoon run",
+				mileage: 6,
+				elevation: 55
+			},
+			{
+				name:"night run",
+				mileage: 10,
+				elevation: 100
+			}
+		],
+
+		wednesday_activities:[
+			{
+				name: "morning run",
+				mileage: 25,
+				elevation: 5
+			}
+		]
+	};
+
+	res.send(JSON.stringify(responseData));
+
+});
 
 
 // Catch 404s and forward to error handler

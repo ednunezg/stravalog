@@ -4,8 +4,9 @@ jQuery(document).ready(function() {
 	var options = {};
 
 
-	//Generate calendar
+	//Generate calendar;
 	var calendar =  $('#calendar').calendar(options);
+
 
 	//Listen for these button events:
 
