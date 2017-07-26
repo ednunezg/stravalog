@@ -24,16 +24,26 @@ jQuery(document).ready(function() {
 	});
 
 
-	//Re-render on window resizing, with a 500 ms debounce
+	//Re-render on window resizing, with a 1000 ms debounce
 
 	var id;
 	$(window).resize(function() {
 	    clearTimeout(id);
-	    id = setTimeout(doneResizing, 500);
+	    id = setTimeout(doneResizing, 1000);
 	    
 	});
 	function doneResizing(){
-	  calendar.render();  
+		//Re-render calendar
+		calendar.render();
+
+		//Show/hide footer if there is space
+	  	if( $(window).height() - $('.container').outerHeight() > 16)
+    	{	
+    		$('.footer').show();
+    	}
+    	else{
+        	$('.footer').hide();
+    	}
 	}
 
 });

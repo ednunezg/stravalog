@@ -6,15 +6,24 @@ var bodyParser = require('body-parser');
 var path = require('path');
 var logger = require('morgan');
 var strava = require('strava-v3')
+var date_helpers = require('./public/js/date_helpers')
+var unit_helpers = require('./public/js/unit_helpers')
+
 
 var app = express();
 app.use(logger('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({
+  extended: true,
+  limit: '50mb'
+}));
+
+
 
 //Session cookies
 app.use(session({
-	secret: "WILD_KOALA_DREAMS",
+	secret: "MajesticSeaFlapFlap",
 	resave: false,
 	saveUninitialized: true,
 	cookie: { 
@@ -58,7 +67,6 @@ app.get('/tokenexchange', function(req, res) {
   var code = req.query.code;
   strava.oauth.getToken(code,function(err,payload,limits){
   	if(err){ throw new Error("Unable to request access token");}
-	
 	req.session.strava_token = payload.access_token;
 	console.log("ACCESS TOKEN PRIOR TO REDIRECTING =" , req.session.strava_token);
 	res.redirect('/traininglog');
@@ -82,46 +90,84 @@ app.get('/logout', function(req,res){ //TODO: CHANGE THIS TO POST
 	res.redirect('/');
 });
 
+
+/*
+	retrieve_activities endpoint serves requests for retrieving
+	activities for a certain week.
+
+	Request parameters:
+		* today_date: today's date
+		* week_id: week # with respect to today's date
+*/
+
 app.post('/retrieve_activities', function(req,res){
 	
-	console.log("POST for receive_activities called");
-	console.log("req.body = " + req.body);
+	var todayDate = new Date(req.body.todayDate);
+	var weekID = req.body.weekID;
+	var activityType = req.body.activityType;
 
-	var from_date = req.body.from_date;
-	var week_id = req.body.week_id;
+	console.log("today_date = " + todayDate);
+	console.log("num_weeks = " + weekID);
 
-	console.log("from_date = " + from_date);
-	console.log("num_weeks = " + week_id);
+	var weekRange = date_helpers.getWeekRange(todayDate, weekID);
+	var mondayUnixEpoch = weekRange.monday.getUnixTime();
+	var sundayUnixEpoch = weekRange.sunday.getUnixTime();
 
-	var responseData = {
-		week_id: 0,
-		total_mileage: 100,
-		total_elevation: 15245,
+	console.log("Monday epoch = " + mondayUnixEpoch);
+	console.log("Sunday epoch = " + sundayUnixEpoch);
+
+	strava.athlete.listActivities( 
+
+		{ 'after':mondayUnixEpoch.toString(), 'before':sundayUnixEpoch.toString() },
+		function(err,payload,limits){	
+			if(err){ throw new Error("Unable to request athlete activities");}
 		
-		monday_activities:[
-			{
-				name: "afternoon run",
-				mileage: 6,
-				elevation: 55
-			},
-			{
-				name:"night run",
-				mileage: 10,
-				elevation: 100
+			//Filter the payload only with the data we need
+
+			var acts = {};
+			acts.week_id = weekID;
+			acts.total_week_distance = 0;
+			acts.total_week_elevation = 0;
+			acts.activities = [[],[],[],[],[],[],[],[]]; //Outer slot is day of the week, inner is list of activities for that day
+
+			console.log("payload length = " + payload.length);
+			console.log("payload[0] = " + JSON.stringify(payload[0]));
+
+			for (var i = 0; i < payload.length; i++) {
+
+				console.log("payload[" + i + "] type = " + payload[i].type);
+				if(payload[i].type == activityType){
+					
+					//Activities are sorted by the day of the week in new filtered payload
+					dayOfTheWeek = new Date(payload[i].start_date_local).getDay();
+					
+					//Filtered data
+					var cur = {
+						'id': payload[i].id,
+						'name': payload[i].name,
+						'date': payload[i].start_date_local,
+						'distance': payload[i].distance,
+						'total_elevation_gain': payload[i].total_elevation_gain,
+						'moving_time': payload[i].moving_time,
+						'avg_speed': payload[i].avg_speed
+					}
+
+					acts.activities[dayOfTheWeek].push(cur);
+					acts.total_week_distance += payload[i].distance;
+					acts.total_week_elevation += payload[i].total_elevation_gain;
+				}
 			}
-		],
 
-		wednesday_activities:[
-			{
-				name: "morning run",
-				mileage: 25,
-				elevation: 5
-			}
-		]
-	};
+			//Simplify floats to two trailing decimals
+			acts.total_week_distance = acts.total_week_distance.toFixed(2);
+			acts.total_week_elevation = acts.total_week_elevation.toFixed(2);
 
-	res.send(JSON.stringify(responseData));
+		res.setHeader('Content-Type', 'application/json');
+		res.send(JSON.stringify(acts));
 
+		}
+	);
+	
 });
 
 
@@ -142,5 +188,8 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+
+
 
 module.exports = app;

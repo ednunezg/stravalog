@@ -3,13 +3,15 @@ jQuery(document).ready(function() {
 
 	var default_properties = {
 
-		today_date: new Date(),	   	   //date for today
+		today_date: new Date(),	   	  					 //date for today
 
-		cur_weekID: 0,	   		   	   //week # of the top most row in the view. 0 corresponds to week that contains today_date, 1 is last week, etc.
+		cur_weekID: 0,	   		   	  					 //week # of the top most row in the view. 0 corresponds to week that contains today_date, 1 is last week, etc.
 
-		strava_activities: [],	  	   //array of strava activities, where each slot corresponds to week ID
+		cur_activity_type: "Run",     					//"Run" or "Ride"
 
-		oldest_loaded_weekID: null     //oldest weekID present in strava_activities
+		run_activities: [],	  	   						//array of strava activities, where each slot corresponds to week ID
+
+		ride_activities: [],
 
 	};
 
@@ -68,7 +70,7 @@ jQuery(document).ready(function() {
 
 		var calendarDiv = this.context;
 
-		//Dynamically calculate the height for rendering based on window size
+		//Dynamically calculate the height for rendering based on window size. 
 		var windowHeight = $(window).height();
 		var calHeight;
 
@@ -85,27 +87,20 @@ jQuery(document).ready(function() {
 			calHeight = 3;
 		}
 
-		/*
 
-		// Fetch all the activities that are not present in strava_activities
-		var topLeftDate = new Date(this.today_date.getPriorMonday());
-		topLeftDate.setDate(topLeftDate.getDate() - view_week_number*7);
+		//Obtain strava activities for the unfetched weeks
+		if(this.cur_activity_type == 'Run'){
+			var oldest_loaded_weekID = this.run_activities.length - 1;
+			var oldest_week_needed = this.cur_weekID + calHeight - 1;
 
-		var bottomRightDate = new Date();
-		bottomRightDate.setDate(topLeftDate - height*7);
-
-		if(this.oldest_loaded_date === null){
-			this.fetchStravaActivities(bottomRightDate, topLeftDate);
-			this.oldest_loaded_date = bottomRightDate;
+			if(oldest_week_needed > oldest_loaded_weekID){
+				for (var i = oldest_loaded_weekID + 1; i<= oldest_week_needed; i++) {
+					this.run_activities.push(this.fetchStravaActivities(i));
+				}
+			}
 		}
-		else if(bottomRightDate < this.oldest_loaded_date) {
-			this.fetchStravaActivities(bottomRightDate, this.oldest_loaded_date);
-			this.oldest_loaded_date = bottomRightDate;
-		}
-		*/
 
-
-		//Data to be passed in to the calendar template
+		//Pass in strava activities to calendar template file
 		var templateData = {
 			"top_date": this.top_date, //First monday of the top week
 			"height": calHeight
@@ -127,7 +122,7 @@ jQuery(document).ready(function() {
 		
 		var error = "";
 		if(weekID<0) error = "Week ID can not be less than 0";
-		if(weekID>globals.weekIDmax) error = "Week ID can not greater than " + weekIDmax;
+		if(weekID>globals.weekIDmax) error = "Week ID can not greater than " + globals.weekIDmax;
 
 		if(error){
 			handleError(err);
@@ -136,7 +131,7 @@ jQuery(document).ready(function() {
 
 		console.log("from date = " + this.today_date);
 
-		var data = {from_date: this.today_date.toString(), week_ID: weekID};
+		var data = {todayDate: this.today_date.toString(), weekID: weekID, activityType: this.cur_activity_type};
 
 		$.ajax({
             url: "/retrieve_activities",
@@ -149,7 +144,8 @@ jQuery(document).ready(function() {
                 handleError(error);
             },
             success: function(data) {
-                console.log("DATA FROM API = " + data);
+                console.log("DATA FROM API = " + JSON.stringify(data));
+                return data;
             }
         });
 	}
