@@ -11,11 +11,15 @@ jQuery(document).ready(function() {
 	//Listen for these button events:
 
 	$( "#scrollup-btn" ).click(function() {
-	  alert( "Handler for scrollup called." );
+	  	calendar.scrollUp();
 	});
 
 	$( "#scrolldown-btn" ).click(function() {
-	  alert( "Handler for scrolldown called." );
+	  	calendar.scrollDown();
+	});
+
+	$( "#scrolltoday-btn" ).click(function() {
+	  	calendar.scrollToday();
 	});
 
 
@@ -24,16 +28,12 @@ jQuery(document).ready(function() {
 	});
 
 
+
 	//Re-render on window resizing, with a 1000 ms debounce
 
-	var id;
-	$(window).resize(function() {
-	    clearTimeout(id);
-	    id = setTimeout(doneResizing, 1000);
-	    
-	});
-	function doneResizing(){
+	$(window).resize( $.debounce( 1000, function(event) {
 		//Re-render calendar
+		calendar.updateHeight();
 		calendar.render();
 
 		//Show/hide footer if there is space
@@ -44,6 +44,31 @@ jQuery(document).ready(function() {
     	else{
         	$('.footer').hide();
     	}
-	}
+	}) );
+
+
+	//Detect mouse scroll up or down with a 300 ms debounce
+
+	$(window).bind('mousewheel', $.debounce( 300, function(event) {
+		var delta = event.originalEvent.deltaY
+
+		console.log("SCROLL Detect");
+		console.log("DELTA = " + delta);
+	    if (delta < 0) {
+	    	console.log("SCROLL UP DETECTED");
+	        calendar.scrollUp();
+	    }
+	    if (delta > 0) {
+	    	console.log("SCROLL DOWN DETECTED");
+	        calendar.scrollDown();
+	    }
+	}) );
+
+
+	//Detect change in activity type
+	$("#activity-selector :input").change(function() {
+    	calendar.changeActivity(this.value);
+	});
+
 
 });

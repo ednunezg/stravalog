@@ -126,6 +126,7 @@ app.post('/retrieve_activities', function(req,res){
 
 			var acts = {};
 			acts.week_id = weekID;
+			acts.week_range = date_helpers.getWeekRangeFormatted(todayDate, weekID);
 			acts.total_week_distance = 0;
 			acts.total_week_elevation = 0;
 			acts.activities = [[],[],[],[],[],[],[],[]]; //Outer slot is day of the week, inner is list of activities for that day

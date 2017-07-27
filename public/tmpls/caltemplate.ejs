@@ -11,21 +11,68 @@
 
 	<div class="cal-body">
 		
-		<%	for(var i=0; i<templateData.height; i++){ %>
+		<%	for(var i=calendar.cur_weekID; i<calendar.cur_weekID+calendar.cal_height; i++){ %>
 
+		<% if(i==0) { %>
+		
+		<div class="cal-row cal-row-today">
+		
+		<% } else { %>
+		
 		<div class="cal-row">
-			<div class="cal-cell-info"> Some info !!!!! </div>
-			<div class="cal-cell-day"> 1 </div>
-			<div class="cal-cell-day"> 2 </div>
-			<div class="cal-cell-day"> 3 </div>
-			<div class="cal-cell-day"> 4 </div>
-			<div class="cal-cell-day"> 5 </div>
-			<div class="cal-cell-day"> 6 </div>
-			<div class="cal-cell-day"> 7 </div>
-		</div>
-
-
+		
 		<% } %>
-		</div>
 
+
+			<div class="cal-cell-info"> 
+				<div class="cal-innercell-week_range">
+					<%= calendar.activities[i].week_range %>
+				</div>
+
+				<div class="cal-innercell-total_week_distance" %>
+					<%= (calendar.activities[i].total_week_distance * globals.conversionfactor_distance).toFixed(1) %> <%= globals.units_distance %>
+				</div>
+
+				<div class="cal-innercell-total_week_elevation" %>
+					<%= (calendar.activities[i].total_week_elevation * globals.conversionfactor_elevation).toFixed(0) %> <%= globals.units_elevation %>
+				</div>
+			</div>
+
+
+			<% for(var j=0; j<7; j++) { %>	
+				<div class="cal-cell-day">
+					<% if(calendar.activities[i].activities[j].length == 1) { %>
+						<div class=cal-innercell-1of1acts>
+							<%= (calendar.activities[i].activities[j][0].distance * globals.conversionfactor_distance).toFixed(1) %>
+						</div>
+
+					<% } else if(calendar.activities[i].activities[j].length == 2) { %>
+
+						<div class=cal-innercell-1of2acts>
+							<%= (calendar.activities[i].activities[j][0].distance * globals.conversionfactor_distance).toFixed(1) %>
+						</div>
+
+						<div class=cal-innercell-2of2acts>
+							<%= (calendar.activities[i].activities[j][1].distance * globals.conversionfactor_distance).toFixed(1) %>
+						</div>
+
+					<% } else if(calendar.activities[i].activities[j].length > 2) { %>
+						<div class=cal-innercell-1of2acts>
+							<%= (calendar.activities[i].activities[j][0].distance * globals.conversionfactor_distance).toFixed(1) %>
+						</div>
+
+						<div class=cal-innercell-2of2acts>
+							<%= (calendar.activities[i].activities[j][1].distance * globals.conversionfactor_distance).toFixed(1) %>
+						</div>
+
+						<div class=cal-innercell-morelabel>
+							More...
+						</div>
+
+					<% } %>
+				</div>
+			<%	}  %> 
+			
+			</div>
+		<% } %>
 	</div>

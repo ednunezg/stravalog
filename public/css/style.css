@@ -71,7 +71,7 @@ blockquote::after{
 }
 
 #calendar{
-  margin: 1em auto;
+  margin: 1.5em auto;
   width: 900px;
   background-color:#FFFFFF;
 }
@@ -95,11 +95,30 @@ blockquote::after{
   border-radius: 30px;
 }
 
+.btn-primary{
+    background-color: #ffffff;
+    color: #000;
+    border-color: #668cff;
+}
+
+.btn-primary:hover{
+  background-color: #5172d6;
+}
+
+.btn-primary.active{
+    background-color: #668cff;
+}
+
+.btn-primary.active:hover{
+  background-color: #5172d6;
+}
+
+
 
 /* Calendar Elements */
 
 
-  /*Inner cells*/
+  /*Cells*/
 
   [class*="cal-cell"] {
     float: left;
@@ -110,17 +129,23 @@ blockquote::after{
   }
 
   .cal-cell-info {
+    /*height: 100px;*/
     float: left;
+    text-align: center;
     margin-left: 0;
-    min-height: 1px;
+    padding-top: 12px;
     width: 16%;
+    border-right: 1px solid #999;
+  }
+
+  .cal-body .cal-cell-info {
+    height:100px;
   }
 
   .cal-cell-day {
-    min-height: 100px;
+    height: 100px;
     border-left: 1px solid #e1e1e1;
     position: relative;
-
 
     display: block;
     -webkit-box-sizing: border-box;
@@ -131,7 +156,6 @@ blockquote::after{
 
 
   .cal-cell-head {
-    font-weight: bolder;
     text-align: center;
     border: 0px solid;
     padding: 5px 0;
@@ -139,19 +163,119 @@ blockquote::after{
     min-height: auto;
     overflow: hidden;
     text-overflow: ellipsis;
+    
+    font-size: 18px;
+    font-weight: normal;
+    color: #000;
+  }
+
+  /* Elements inside cells */
+
+  .cal-innercell-week_range {
+    font-size: 16px;
+    font-weight: bold;
+    color: #000;
+  }
+
+  .cal-innercell-total_week_distance {
+    font-size: 16px;
+    font-weight: normal;
+    color: #999;
+  }
+
+  .cal-innercell-total_week_elevation {
+    font-size: 16px;
+    font-weight: normal;
+    color: #999;
+  }
+
+  .cal-innercell-1of1acts {
+    background-color: #668cff;
+    width: 60px;
+    height: 60px;
+    margin: 18px 24px 0px;
+    border-radius: 50%;
+    color: white;
+    font-size: 16px;
+    
+    /* Shadow generated with cssmatic.com */
+    -webkit-box-shadow: 3px 3px 15px -1px rgba(0,0,0,0.7);
+    -moz-box-shadow: 3px 3px 15px -1px rgba(0,0,0,0.7);
+    box-shadow: 3px 3px 15px -1px rgba(0,0,0,0.7);
+
+    padding-top: 20px;
+    text-align: center;
+  }
+
+  .cal-innercell-1of2acts {
+    position:absolute;
+
+    background-color: #668cff;
+    width: 52px;
+    height: 52px;
+    margin: 32px 40px 0px;
+    border-radius: 50%;
+    color: white;
+    font-size: 14px;
+    
+    /* Shadow generated with cssmatic.com */
+    -webkit-box-shadow: 3px 3px 3px 0px rgba(0,0,0,0.3);
+    -moz-box-shadow: 3px 3px 3px 0px rgba(0,0,0,0.3);
+    box-shadow: 3px 3px 3px 0px rgba(0,0,0,0.3);
+
+    padding-top: 16px;
+    padding-left: 4px;
+    text-align: center;
+  }
+
+
+  .cal-innercell-2of2acts {
+    position:absolute;
+    
+    background-color: #668cff;
+    width: 52px;
+    height: 52px;
+    margin: 4px 10px 0px;
+    border-radius: 50%;
+    color: white;
+    font-size: 14px;
+    
+    /* Shadow generated with cssmatic.com */
+    -webkit-box-shadow: 3px 3px 15px -1px rgba(0,0,0,0.7);
+    -moz-box-shadow: 3px 3px 15px -1px rgba(0,0,0,0.7);
+    box-shadow: 3px 3px 15px -1px rgba(0,0,0,0.7);
+
+    padding-top: 16px;
+    text-align: center;
+  }
+
+  .cal-innercell-morelabel {
+    position: absolute;
+    bottom: 0;
+    left: 5px;
+    text-align: center;
+    color: #999;
+  }
+
+  .cal-innercell-morelabel:hover {
+    text-decoration: underline;
   }
 
   /* Mouse hover triggers */
 
   .cal-cell-day:hover {
+    background-color: #ffcbad;
+  }
+
+  .cal-body .cal-row:hover {
+    /*background-color: #ededed;*/
+
     background-color: #ededed;
+    -webkit-transition: background-color 100ms linear;
+    -ms-transition: background-color 100ms linear;
+    transition: background-color 100ms linear;
+
   }
-
-
-  .cal-body > .cal-row:hover{
-    background-color: #fafafa;
-  }
-
   
   /* Rows */
 
@@ -161,13 +285,14 @@ blockquote::after{
     margin-right: 0px;
   }
 
+  .cal-body .cal-row-today {
+    background-color: #ffe3d3;
+  }
+
   /* Body */
 
   .cal-body {
-    border-top: 1px solid #e1e1e1;
-    border-bottom: 1px solid #e1e1e1;
-    border-right: 1px solid #e1e1e1;
-    border-left: 1px solid #e1e1e1;
+    border: 1px solid #000;
     border-radius: 1px;
   }
 

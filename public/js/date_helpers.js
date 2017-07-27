@@ -27,7 +27,7 @@
 
 	exports.getWeekRange = function(todayDate, weekID) {
 		
-		var monday = new Date()
+		var monday = new Date(todayDate.getPriorMonday());
 		monday.setDate(todayDate.getPriorMonday().getDate() - 7*weekID);
 		monday.setHours(0,0,0,0);
 		
@@ -61,7 +61,7 @@
 			"Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
 		]
 
-		var range = getWeekRange(todayDate, weekID);
+		var range = exports.getWeekRange(todayDate, weekID);
 
 		if(range.monday.getMonth() == range.sunday.getMonth()){
 			return abbreviatedMonths[range.monday.getMonth()] + " " + range.monday.getDate() + "-" + range.sunday.getDate();
@@ -72,7 +72,7 @@
 		}
 	}
 
-	
+
 
 
 	/*
