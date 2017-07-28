@@ -1,0 +1,29 @@
+
+<div class="popover-main">
+
+	<% if(day_activities.length==0) { %> No activities <% } %>
+
+	<% for(var i=0; i<day_activities.length; i++) { %>	
+
+		<% if(i>0) { %> <hr> <% } %>
+		
+		<div class="popover-activity-name"> <a href= <%= "https://www.strava.com/activities/" + day_activities[i].id %> <strong> <%= day_activities[i].name %> </strong> </a>
+
+		<div class="popover-activity-time">
+
+			<%
+			    var date = new Date(1970,0,1);
+			    date.setSeconds(day_activities[i].moving_time);
+			    var time =  date.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
+			%>
+
+			<%= time %>
+
+		</div>
+		
+		<div class="popover-activity-distance"> <%= (day_activities[i].distance * globals.conversionfactor_distance).toFixed(1) %> <%= globals.units_distance %> </div>
+		
+		<div class="popover-activity-elevation"> <%= (day_activities[i].total_elevation_gain * globals.conversionfactor_elevation).toFixed(0) %> <%= globals.units_elevation %> </div>
+
+	<% } %>
+</div>

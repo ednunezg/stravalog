@@ -1,4 +1,4 @@
-  	<div class="cal-row cal-head">
+  	<div class="cal-head cal-row">
 		<div class="cal-cell-head cal-cell-info"> </div>
 		<div class="cal-cell-head"> <%= globals.day_names.d0 %>  </div>
 		<div class="cal-cell-head"> <%= globals.day_names.d1 %>  </div>
@@ -40,7 +40,7 @@
 
 
 			<% for(var j=0; j<7; j++) { %>	
-				<div class="cal-cell-day">
+				<div class="cal-cell-day" weekID="<%= i %> " dayOfTheWeek="<%= j %>" data-toggle="popover" tabindex="0" data-placement="bottom">
 					<% if(calendar.activities[i].activities[j].length == 1) { %>
 						<div class=cal-innercell-1of1acts>
 							<%= (calendar.activities[i].activities[j][0].distance * globals.conversionfactor_distance).toFixed(1) %>

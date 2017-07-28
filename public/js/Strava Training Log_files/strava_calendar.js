@@ -5,10 +5,7 @@ jQuery(document).ready(function() {
 
 		cal_height: 3,									//number of rows (weeks) in the calendar
 
-		// today_date: new Date("2017-06-19T20:18:09.983Z"),	   	  					 //date for today
-
-		today_date: new Date(),	   	  					 //date for today
-
+		today_date: new Date("2017-06-19T20:18:09.983Z"),	   	  					 //date for today
 
 		cur_weekID: 0,	   		   	  					 //week # of the top most row in the view. 0 corresponds to week that contains today_date, 1 is last week, etc.
 
@@ -47,8 +44,7 @@ jQuery(document).ready(function() {
 		conversionfactor_elevation: 3.28084,
 	};
 
-	var calendar_template_file;
-	var popover_template_file;
+	var template_file;
 
 
 	function StravaCalendar(properties, context) {
@@ -74,23 +70,11 @@ jQuery(document).ready(function() {
 		this.scroll_lock = false;
 		this.context = context;
 
-
-		//Fetch the calendar template and popover file from the server and view cal when done
-		$.when(
-
-			$.get('tmpls/caltemplate.ejs', function(str) {
-					    calendar_template_file = _.template(str);
-					}),
-
-			$.get('tmpls/popovertemplate.ejs', function(str) {
-					    popover_template_file = _.template(str);
-					})
-
-		).then(function() {
+		//Fetch the template file from the server and view when done
+		$.get('tmpls/caltemplate.ejs', function(str) {
+		    template_file = _.template(str);
 		    self_reference.view();
 		});
-
-
 
 		return this;
 	}
@@ -147,7 +131,7 @@ jQuery(document).ready(function() {
 		//Fetch the missing weeks from API and render template when done
 		function fetchMissingActivities(){
 
-			if( nextMissingWeek > oldestWeekNeeded) renderCalendar();
+			if( nextMissingWeek > oldestWeekNeeded) renderTemplate();
 			else{
 				var error = "";
 				if(nextMissingWeek<0) error = "Week ID can not be less than 0";
@@ -181,32 +165,15 @@ jQuery(document).ready(function() {
 			}
 		}
 
-		function renderCalendar(){
-			//Render the calendar template and release locks when done
-			var render = calendar_template_file({globals: globals, calendar: calendar});
-		    calendarDiv.html(render);
-		    calendar.render_lock = false;
-			calendar.scroll_lock = false;
-
-		     
-
-			//Detect click on calendar day. Add popover
-			$(".cal-cell-day").click(function(){
-
-				$("[data-toggle='popover']").popover('hide');
-				$(this).popover({ 
-					html : true,
-					content: renderPopover( parseInt($(this).attr("weekID")), parseInt($(this).attr("dayOfTheWeek"))),
-					trigger: "manual"
-				 });
-				$(this).popover("show");
-
-			});
-		}
-
-		function renderPopover(weekID, dayOfTheWeek){
-			var day_activities = calendar.activities[weekID].activities[dayOfTheWeek];
-			return popover_template_file({day_activities: day_activities, globals: globals});
+		function renderTemplate(){
+			//Render the calendar template and when done
+  			// $( ".cal-body" ).fadeOut( "fast", function() {
+    			var render = template_file({globals: globals, calendar: calendar});
+			    calendarDiv.html(render);
+			    calendar.render_lock = false;
+				calendar.scroll_lock = false;
+			    // $( ".cal-body" ).fadeIn( "slow", function() {});
+  			// });
 		}
 	}
 

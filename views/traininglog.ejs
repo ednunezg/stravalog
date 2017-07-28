@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<% include ./partials/head %>
+<body>
+
+
+<div class="container">
+
+    <div class="row justify-content-md-center"  id="top">
+      
+	    <div id="quote" class="col-7">
+	      
+	      <blockquote>
+	        <p class="quote-content" id="quote-content">
+	        Get going … walk if you have to, but finish the damned race.
+	        </p>
+	        <footer class="quote-author" id="quote-author"> Ron Hill </footer>
+
+	      </blockquote>
+
+	    </div>
+
+	</div>
+
+	<div id="calendar-nav">
+		
+		<button id="scrolltoday-btn" class="btn btn-secondary">
+			Today
+		</button>
+
+		<button id="scrolldown-btn" class="btn btn-secondary">
+			<span class="fa fa-caret-down" aria-hidden="true"></span>
+		</button>
+
+
+		<button id="scrollup-btn" class="btn btn-secondary">
+			<span class="fa fa-caret-up" aria-hidden="true"></span>
+		</button>
+
+		<a tabindex="0" id="settings-btn" class="btn btn-secondary pull-right" role="button"
+		   data-toggle="popover" data-placement="bottom" data-trigger="click" title="Settings"
+		   data-content=
+		   "
+		   		 Units: 
+			     <div class='btn-group'  data-toggle='buttons'>
+			     <label class='btn btn-primary btn-sm active'>
+			     	<input checked='checked' name='settings-units' value='Imperial' type='radio'> Imperial
+		         </label>
+		         <label class='btn btn-primary btn-sm'>
+		         	<input name='settings-units' value='Metric' type='radio'> Metric
+		         </label>
+			  </div>
+		   ">
+		   <span class="fa fa-cog" aria-hidden="true"></span>
+	    </a>
+
+	</div>
+
+
+	<div id="calendar">
+		
+		<br>
+		<center> <h3>Fetching activities and rendering ...</h3> </center>
+		<br>
+
+	</div>
+
+	<div id="activity-selector" class="text-center">
+	  <div class="btn-group"  data-toggle="buttons">
+	     <label class="btn btn-primary active">
+	     	<input checked="checked" name="activity-type" value="Run" type="radio"> Run
+         </label>
+         <label class="btn btn-primary">
+         	<input name="activity-type" value="Ride" type="radio"> Cycle
+         </label>
+	  </div>
+	</div>
+
+
+	<div id="error-message">
+		
+	</div>
+	
+</div>
+
+<% include ./partials/footer %>
+<% include ./partials/scripts %>
+</body>
+</html>

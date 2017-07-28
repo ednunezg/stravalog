@@ -5,20 +5,12 @@ body {
     margin-top: 1em;
     font-size: 14px;
     font-family: 'Roboto', sans-serif;
-
-    background-image: url("http://orig03.deviantart.net/b91a/f/2015/259/a/0/mountain_minimalist_by_amdpastrana-d99tigk.jpg");
-    /*background-image: url("https://s-media-cache-ak0.pinimg.com/originals/63/ae/83/63ae837db0f1b84697095d5530d55a85.jpg");*/
-    /*background-image: url("https://archive-media-0.nyafuu.org/wg/image/1476/99/1476995537219.png");*/
-    
-    background-size: cover;
 }
 
 .footer {
     position: fixed;
     bottom: 0;
     width: 100%;
-    mix-blend-mode: difference;
-    color: #fff;
 }
 
 /* Block quote mod. Creds to https://codepen.io/maxds/pen/DcveB */
@@ -29,14 +21,13 @@ blockquote{
   padding: 15px 20px 15px 45px;
   margin: 0 0 10px;
   position: relative;
-
+  
   /*Font*/
   font-family: 'Roboto', sans-serif;
   font-size: 16px;
   line-height: 1.2;
   color: #666;
   text-align: justify;
-
   
   /*Borders - (Optional)*/
   /*
@@ -45,11 +36,11 @@ blockquote{
   */
   
   /*Box Shadow - (Optional)*/
-  
+  /*
   -moz-box-shadow: 2px 2px 15px #a6a6a6;
   -webkit-box-shadow: 2px 2px 15px #a6a6a6;
   box-shadow: 2px 2px 15px #a6a6a6;
-  
+  */
 }
 
 blockquote::before{
@@ -74,19 +65,16 @@ blockquote::after{
 
 
 #calendar-nav{
-  width: 900px;
-  text-align: center;
+  text-align: left;
   line-height: 1.65;
-  margin: 1em auto;
-  padding-left: 2em;
-  padding-right: 2em;
+  margin-top: 0px;
+  width: 900px;
 }
 
 #calendar{
-  margin: 0.5em auto;
+  margin: 1.5em auto;
   width: 900px;
-
-
+  background-color:#FFFFFF;
 }
 
 
@@ -97,13 +85,15 @@ blockquote::after{
 
 /* Shared elements */
 
-.btn-secondary{
-    font-family: 'Roboto';
-    font-size: 14px;
-    background-color: #fff;
-    border-width: 1px;
-    color: #000;
-    border-color: #4762b2;
+.roundbutton{  
+  /* Size */
+  width: 35px;
+  height: 35px;
+  padding: 2px 0;
+  font-size: 12px;
+
+  /* Curvature */
+  border-radius: 30px;
 }
 
 .btn-primary{
@@ -174,7 +164,7 @@ blockquote::after{
     overflow: hidden;
     text-overflow: ellipsis;
     
-    font-size: 16px;
+    font-size: 18px;
     font-weight: normal;
     color: #fff;
   }
@@ -314,7 +304,7 @@ blockquote::after{
     border-right: 1px solid #000;
     border-radius: 1px;
   
-    background-color: #fff;
+
   }
 
   /* Pseudo elements */
@@ -328,13 +318,4 @@ blockquote::after{
 
   .cal-row:after{
     clear: both;
-  }
-
-  /* Popover */
-
-  .popover-main{
-    padding-left: 5px;
-    padding-right: 5px;
-    max-height: 100px;
-    overflow: auto;
   }

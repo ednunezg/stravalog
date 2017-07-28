@@ -7,12 +7,6 @@ jQuery(document).ready(function() {
 	//Generate calendar;
 	var calendar =  $('#calendar').calendar(options);
 
-	//Enable popovers
-	$('#settings-btn').popover({ 
-		html : true,
-		trigger: "click"
-	});
-
 
 	//Listen for these button events:
 
@@ -27,6 +21,12 @@ jQuery(document).ready(function() {
 	$( "#scrolltoday-btn" ).click(function() {
 	  	calendar.scrollToday();
 	});
+
+
+	$( "#settings-btn" ).click(function() {
+	  alert( "Handler for settings called." );
+	});
+
 
 
 	//Re-render on window resizing, with a 1000 ms debounce
@@ -49,13 +49,17 @@ jQuery(document).ready(function() {
 
 	//Detect mouse scroll up or down with a 300 ms debounce
 
-	$("#calendar").bind('mousewheel', $.debounce( 300, function(event) {
+	$(window).bind('mousewheel', $.debounce( 300, function(event) {
 		var delta = event.originalEvent.deltaY
 
+		console.log("SCROLL Detect");
+		console.log("DELTA = " + delta);
 	    if (delta < 0) {
+	    	console.log("SCROLL UP DETECTED");
 	        calendar.scrollUp();
 	    }
 	    if (delta > 0) {
+	    	console.log("SCROLL DOWN DETECTED");
 	        calendar.scrollDown();
 	    }
 	}) );
@@ -65,7 +69,6 @@ jQuery(document).ready(function() {
 	$("#activity-selector :input").change(function() {
     	calendar.changeActivity(this.value);
 	});
-
 
 
 });

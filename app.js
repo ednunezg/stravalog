@@ -20,7 +20,6 @@ app.use(bodyParser.urlencoded({
 }));
 
 
-
 //Session cookies
 app.use(session({
 	secret: "MajesticSeaFlapFlap",
@@ -78,7 +77,7 @@ app.get('/traininglog', function(req,res){
 	//strava.athletes.get({id:1595767},function(err,payload,limits) {
 	//	console.log(payload);
 	//});
-  	res.render('log', {});
+  	res.render('traininglog', {});
 });
 
 app.get('/demo', function(req,res){
@@ -105,9 +104,6 @@ app.post('/retrieve_activities', function(req,res){
 	var todayDate = new Date(req.body.todayDate);
 	var weekID = req.body.weekID;
 	var activityType = req.body.activityType;
-
-	console.log("today_date = " + todayDate);
-	console.log("num_weeks = " + weekID);
 
 	var weekRange = date_helpers.getWeekRange(todayDate, weekID);
 	var mondayUnixEpoch = weekRange.monday.getUnixTime();
