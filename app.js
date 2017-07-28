@@ -42,7 +42,6 @@ app.set('view engine', 'ejs');
 
 
 app.get('/', function(req, res) {
-	console.log("INDEX PAGE ACCESS TOKEN = " + req.session.strava_token);
 
 	//If access token exists in session, redirect to training log page
 	if (req.session.strava_token !== 'undefined' && typeof req.session.strava_token === 'string') {
@@ -67,16 +66,11 @@ app.get('/tokenexchange', function(req, res) {
   strava.oauth.getToken(code,function(err,payload,limits){
   	if(err){ throw new Error("Unable to request access token");}
 	req.session.strava_token = payload.access_token;
-	console.log("ACCESS TOKEN PRIOR TO REDIRECTING =" , req.session.strava_token);
 	res.redirect('/traininglog');
   });
 });
 
 app.get('/traininglog', function(req,res){
-	console.log("ACCESS TOKEN AFTER REDIRECTING =" , req.session.strava_token);
-	//strava.athletes.get({id:1595767},function(err,payload,limits) {
-	//	console.log(payload);
-	//});
   	res.render('traininglog', {});
 });
 
@@ -109,9 +103,6 @@ app.post('/retrieve_activities', function(req,res){
 	var mondayUnixEpoch = weekRange.monday.getUnixTime();
 	var sundayUnixEpoch = weekRange.sunday.getUnixTime();
 
-	console.log("Monday epoch = " + mondayUnixEpoch);
-	console.log("Sunday epoch = " + sundayUnixEpoch);
-
 	strava.athlete.listActivities( 
 
 		{ 'after':mondayUnixEpoch.toString(), 'before':sundayUnixEpoch.toString() },
@@ -127,12 +118,8 @@ app.post('/retrieve_activities', function(req,res){
 			acts.total_week_elevation = 0;
 			acts.activities = [[],[],[],[],[],[],[],[]]; //Outer slot is day of the week, inner is list of activities for that day
 
-			console.log("payload length = " + payload.length);
-			console.log("payload[0] = " + JSON.stringify(payload[0]));
-
 			for (var i = 0; i < payload.length; i++) {
 
-				console.log("payload[" + i + "] type = " + payload[i].type);
 				if(payload[i].type == activityType){
 					
 					//Activities are sorted by the day of the week in new filtered payload
