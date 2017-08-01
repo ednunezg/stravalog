@@ -44,7 +44,7 @@ jQuery(document).ready(function() {
 		units_elevation: "ft",
 
 		conversionfactor_distance: 0.000621371,
-		conversionfactor_elevation: 3.28084,
+		conversionfactor_elevation: 3.28084
 	};
 
 	var calendar_template_file;
@@ -109,13 +109,13 @@ jQuery(document).ready(function() {
 
 		var windowHeight = $(window).height();
 
-		if(windowHeight >= 900){
+		if(windowHeight >= 860){
 			this.cal_height = 6;
 		}
-		else if(windowHeight >= 800){
+		else if(windowHeight >= 760){
 			this.cal_height = 5;
 		}
-		else if (windowHeight >= 700){
+		else if (windowHeight >= 660){
 			this.cal_height = 4;
 		}
 		else {
@@ -130,7 +130,6 @@ jQuery(document).ready(function() {
 
 	StravaCalendar.prototype.render = function() {
 
-		console.log("Render lock = " + this.render_lock);
 
 		if(!this.render_lock){
 
@@ -172,9 +171,6 @@ jQuery(document).ready(function() {
 		            success: function(data) {
 		                calendar.activities.push(data);
 		                nextMissingWeek++;
-		                console.log("next missing = " + nextMissingWeek);
-						console.log("oldestWeekNeeded = " + oldestWeekNeeded);
-		                console.log("parent this = " + JSON.stringify(calendar));
 		                fetchMissingActivities();
 		            }
 		        });
@@ -182,26 +178,38 @@ jQuery(document).ready(function() {
 		}
 
 		function renderCalendar(){
-			//Render the calendar template and release locks when done
+			//Destroy all currently existing popovers
+			$("[class='cal-cell-day']").popover("dispose");
+
+			//Render the calendar template
 			var render = calendar_template_file({globals: globals, calendar: calendar});
 		    calendarDiv.html(render);
-		    calendar.render_lock = false;
-			calendar.scroll_lock = false;
-
-		     
-
-			//Detect click on calendar day. Add popover
+		    
+			//Detect click on calendar day. Add popover element and display
 			$(".cal-cell-day").click(function(){
 
-				$("[data-toggle='popover']").popover('hide');
-				$(this).popover({ 
-					html : true,
-					content: renderPopover( parseInt($(this).attr("weekID")), parseInt($(this).attr("dayOfTheWeek"))),
-					trigger: "manual"
-				 });
-				$(this).popover("show");
-
+				if(this.hasAttribute("popoverOn")){
+					this.removeAttribute("popoverOn");
+					$(this).popover("hide");
+				}
+				else{
+					$("[class='cal-cell-day']").popover("hide");
+					$(this).popover({ 
+						html : true,
+						content: renderPopover( parseInt($(this).attr("weekID")), parseInt($(this).attr("dayOfTheWeek"))),
+						trigger: "manual",
+						animation: false
+					 });
+					$(this).popover("show");
+					this.setAttribute("popoverOn", "");
+				}
 			});
+
+
+			//Release locks when done
+			calendar.render_lock = false;
+			calendar.scroll_lock = false;
+
 		}
 
 		function renderPopover(weekID, dayOfTheWeek){
@@ -210,6 +218,20 @@ jQuery(document).ready(function() {
 		}
 	}
 
+	StravaCalendar.prototype.changeUnits = function(type) {
+		if(type == "Metric"){
+			globals.units_distance = "km";
+			globals.units_elevation = "m";
+			globals.conversionfactor_distance = 0.001;
+			globals.conversionfactor_elevation = 1;
+		}
+		else{
+			globals.units_distance = "mi";
+			globals.units_elevation = "ft";
+			globals.conversionfactor_distance = 0.000621371;
+			globals.conversionfactor_elevation = 3.28084;
+		}
+	}
 
 
 	StravaCalendar.prototype.scrollUp = function() {
@@ -226,12 +248,10 @@ jQuery(document).ready(function() {
 	}
 
 	StravaCalendar.prototype.scrollDown = function() {
-		console.log("SCROLL LOCK = " + this.scroll_lock);
 		if(!this.scroll_lock){
 			this.scroll_lock = true;
 			if(this.cur_weekID+6 < this.weekID_max){
 				this.cur_weekID++;
-				console.log("SCROLL DOWN. CUR_WEEK ID = " + this.cur_weekID);
 				this.render();//Scroll lock is released after render is done
 			}
 			else{

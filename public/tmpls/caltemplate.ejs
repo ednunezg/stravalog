@@ -40,7 +40,7 @@
 
 
 			<% for(var j=0; j<7; j++) { %>	
-				<div class="cal-cell-day" weekID="<%= i %> " dayOfTheWeek="<%= j %>" data-toggle="popover" tabindex="0" data-placement="bottom">
+				<div class="cal-cell-day" weekID="<%= i %> " dayOfTheWeek="<%= j %>" data-toggle="popover" tabindex="0" data-placement="top">
 					<% if(calendar.activities[i].activities[j].length == 1) { %>
 						<div class=cal-innercell-1of1acts>
 							<%= (calendar.activities[i].activities[j][0].distance * globals.conversionfactor_distance).toFixed(1) %>

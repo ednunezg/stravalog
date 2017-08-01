@@ -22,6 +22,43 @@
 
 	</div>
 
+	<div id="settings-modal" class="modal" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+    		
+    		<div class="modal-content">
+			
+				<div class="modal-header">
+					<h5 class="settings-modal-title">Settings</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+
+				<div class="modal-body">
+					<div id="settings-units">
+						Units&nbsp;
+						<div class='btn-group'  data-toggle='buttons'>
+						<label class='btn btn-primary btn-sm active'>
+							<input checked='checked' name='settings-units-input' value='Imperial' type='radio'> Imperial
+						</label>
+						<label class='btn btn-primary btn-sm'>
+							<input name='settings-units-input' value='Metric' type='radio'> Metric
+						</label>
+						</div>
+					</div>
+				</div>
+
+<!-- 			<div class="modal-footer">
+				<button type="button" class="btn btn-sm btn-secondary">Save changes</button>
+			</div>
+ -->
+
+			</div>
+
+	    </div>
+
+	</div>
+
 	<div id="calendar-nav">
 		
 		<button id="scrolltoday-btn" class="btn btn-secondary">
@@ -37,20 +74,8 @@
 			<span class="fa fa-caret-up" aria-hidden="true"></span>
 		</button>
 
-		<a tabindex="0" id="settings-btn" class="btn btn-secondary pull-right" role="button"
-		   data-toggle="popover" data-placement="bottom" data-trigger="click" title="Settings"
-		   data-content=
-		   "
-		   		 Units: 
-			     <div class='btn-group'  data-toggle='buttons'>
-			     <label class='btn btn-primary btn-sm active'>
-			     	<input checked='checked' name='settings-units' value='Imperial' type='radio'> Imperial
-		         </label>
-		         <label class='btn btn-primary btn-sm'>
-		         	<input name='settings-units' value='Metric' type='radio'> Metric
-		         </label>
-			  </div>
-		   ">
+		<a id="settings-btn" class="btn btn-secondary pull-right" role="button"
+		   data-toggle="modal" data-target="#settings-modal">
 		   <span class="fa fa-cog" aria-hidden="true"></span>
 	    </a>
 
@@ -67,11 +92,11 @@
 
 	<div id="activity-selector" class="text-center">
 	  <div class="btn-group"  data-toggle="buttons">
-	     <label class="btn btn-primary active">
-	     	<input checked="checked" name="activity-type" value="Run" type="radio"> Run
+	     <label class="btn btn-sm btn-primary active">
+	     	<input checked="checked" name="activity-selector-input" value="Run" type="radio"> Run
          </label>
-         <label class="btn btn-primary">
-         	<input name="activity-type" value="Ride" type="radio"> Cycle
+         <label class="btn btn-sm btn-primary">
+         	<input name="activity-selector-input" value="Ride" type="radio"> Cycle
          </label>
 	  </div>
 	</div>

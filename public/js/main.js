@@ -3,14 +3,31 @@ jQuery(document).ready(function() {
 	//Options to be passed in the calendar 
 	var options = {};
 
-
 	//Generate calendar;
 	var calendar =  $('#calendar').calendar(options);
 
-	//Enable popovers
-	$('#settings-btn').popover({ 
-		html : true,
-		trigger: "click"
+	//Set footer to hidden initially
+	$('.footer').hide();
+
+	//Enable settings modal
+	$('#settings-modal').modal({
+	  keyboard: false,
+	  show: false
+	})
+
+	//Get the quote of the day
+	
+
+
+	//Listen to changes in settings modal
+	$("#settings-units :input").change(function() {
+    	calendar.changeUnits(this.value);
+    	calendar.render();
+	});
+
+	//Listen to changes in activity type
+	$("#activity-selector :input").change(function() {
+    	calendar.changeActivity(this.value);
 	});
 
 
@@ -37,7 +54,7 @@ jQuery(document).ready(function() {
 		calendar.render();
 
 		//Show/hide footer if there is space
-	  	if( $(window).height() - $('.container').outerHeight() > 16)
+	  	if( $(window).height() - $('.container').outerHeight() > 50)
     	{	
     		$('.footer').show();
     	}
@@ -47,9 +64,9 @@ jQuery(document).ready(function() {
 	}) );
 
 
-	//Detect mouse scroll up or down with a 300 ms debounce
+	//Detect mouse scroll up or down with a 50 ms debounce
 
-	$("#calendar").bind('mousewheel', $.debounce( 300, function(event) {
+	$("#calendar").bind('mousewheel', $.debounce( 50, function(event) {
 		var delta = event.originalEvent.deltaY
 
 	    if (delta < 0) {
@@ -59,12 +76,6 @@ jQuery(document).ready(function() {
 	        calendar.scrollDown();
 	    }
 	}) );
-
-
-	//Detect change in activity type
-	$("#activity-selector :input").change(function() {
-    	calendar.changeActivity(this.value);
-	});
 
 
 

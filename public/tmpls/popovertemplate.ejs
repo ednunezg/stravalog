@@ -1,13 +1,10 @@
 
 <div class="popover-main">
 
-	<% if(day_activities.length==0) { %> No activities <% } %>
-
 	<% for(var i=0; i<day_activities.length; i++) { %>	
-
-		<% if(i>0) { %> <hr> <% } %>
 		
-		<div class="popover-activity-name"> <a href= <%= "https://www.strava.com/activities/" + day_activities[i].id %> <strong> <%= day_activities[i].name %> </strong> </a>
+		<div class="popover-activity-name"> <a href=<%= "https://www.strava.com/activities/" + day_activities[i].id %> target="_blank" <strong> <%= day_activities[i].name %> </strong> </a>
+		</div>
 
 		<div class="popover-activity-time">
 
@@ -25,5 +22,14 @@
 		
 		<div class="popover-activity-elevation"> <%= (day_activities[i].total_elevation_gain * globals.conversionfactor_elevation).toFixed(0) %> <%= globals.units_elevation %> </div>
 
+		<hr>
+
 	<% } %>
+
+	<div class="popover-activityadd">
+		<a id="activityadd-btn" role="button" >
+		   <span class="fa fa-plus" aria-hidden="true"></span> Add activity
+	    </a>
+
+	</div>
 </div>
