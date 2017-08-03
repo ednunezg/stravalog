@@ -1,4 +1,4 @@
-Asimplified Strava training log
+A simplified Strava training log
 ==============================================
 
 ![](http://i66.tinypic.com/mohn5.png =250x)
