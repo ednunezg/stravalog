@@ -1,7 +1,7 @@
 
 {
-    "access_token"    :"25c8f166d7fa2102c16402809e1269f7721da324"
-    , "client_id"     :"18652"
-    , "client_secret" :"805e91cb6812a75c8bbfe89628cb15632f9f8e0c"
-    , "redirect_uri"  :"http://127.0.0.1:3000/tokenexchange"
+    "access_token"    :"YOUR_STRAVA_ACCESS_TOKEN"
+    , "client_id"     :"YOUR_CLIENT_ID"
+    , "client_secret" :"YOUR_CLIENT_SECRET"
+    , "redirect_uri"  :"YOUR_REDIRECT_URL"
 }
