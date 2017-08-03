@@ -8,7 +8,6 @@ var path = require('path');
 var logger = require('morgan');
 var strava = require('strava-v3');
 var date_helpers = require('./public/js/date_helpers');
-var unit_helpers = require('./public/js/unit_helpers');
 
 
 var app = express();
@@ -81,12 +80,8 @@ app.get('/demo', function(req,res){
 });
 
 app.get('/logout', function(req,res){ //TODO: CHANGE THIS TO POST
-	
-	// strava.oauth.deauthorize({'access_token':req.session.strava_token},function(err,payload,limits){
-	// 	if(err){ throw new Error("Unable to complete deauthorize request");}
-		req.session.destroy();
-		res.redirect('/');
-	// });
+	req.session.destroy();
+	res.redirect('/');
 });
 
 app.get('/retrieve_quote', function(req,res){
@@ -151,12 +146,6 @@ app.post('/retrieve_activities', function(req,res){
 						'avg_speed': payload[i].avg_speed
 					};
 
-					console.log("mondayUnixEpoch = " + mondayUnixEpoch);
-					console.log("sundayUnixEpoch = " + sundayUnixEpoch);
-					console.log("day of the week = " + dayOfTheWeek);
-					console.log("start_date_local = " + payload[i].start_date_local);
-					console.log("start_date_local epoch = " + new Date(payload[i].start_date_local).getUnixTime());
-
 					acts.activities[dayOfTheWeek].push(cur);
 					acts.total_week_distance += payload[i].distance;
 					acts.total_week_elevation += payload[i].total_elevation_gain;
@@ -166,8 +155,6 @@ app.post('/retrieve_activities', function(req,res){
 			//Simplify floats to two trailing decimals
 			acts.total_week_distance = acts.total_week_distance.toFixed(2);
 			acts.total_week_elevation = acts.total_week_elevation.toFixed(2);
-
-			console.log("ACTS = " + JSON.stringify(acts));
 
 			res.send(JSON.stringify(acts));
 
@@ -182,18 +169,11 @@ app.post('/add_activity', function(req,res){
 	var args = JSON.parse(JSON.stringify(req.body));
 	args.access_token = req.session.strava_token;
 
-	console.log("args = " + JSON.stringify(args));
 
 	strava.activities.create( args, function(err,payload,limits){	
-
-			console.log("payload = " + JSON.stringify(payload));
-
 			if(err){ res.status(500).send(""); return;}
-			
 			else if(payload.message){res.status(500).send(payload.message); return;}
-
 			else(res.send({}));
-
 		});
 });
 
