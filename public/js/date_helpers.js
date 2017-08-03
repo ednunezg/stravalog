@@ -20,6 +20,28 @@
 
 
 	/*
+		Get date based on weekID and dayOfTheWeek
+	*/
+
+
+	exports.getDateFromWeekId = function(todayDate, weekID, dayOfTheWeek) {
+
+		var monday = new Date(todayDate.getPriorMonday());
+		monday.setDate(todayDate.getPriorMonday().getDate() - 7*weekID);
+		monday.setHours(0,0,0,0);
+		
+		console.log("MONDAY OF THE WEEK TO ADD TO = " + monday);
+
+		var date = new Date(monday.valueOf());
+		date.setDate(date.getDate() + dayOfTheWeek);
+
+		console.log("DAY OF THE WEEK TO ADD TO = " + date);
+
+		return date;
+	}
+
+
+	/*
 		Get the first and last date of a week given weekID
 		Monday will start at 00:00:00
 		Sunday will end at 23:59:59
@@ -133,11 +155,15 @@
 	};
 
 	/*
-		get Unix epoch
+		get UTC Unix epoch
 	*/
 
-	Date.prototype.getUnixTime = function() { return this.getTime()/1000|0 };
+	Date.prototype.getUnixTime = function() {
+		// var utc = this.getTime() + (this.getTimezoneOffset() * 60000)
+		// return this.getTime()/1000|0;
 
+		return this.getTime()/1000|0;
+	};
 
 
 })(typeof exports === 'undefined'? this['date_helpers']={}: exports);

@@ -21,7 +21,6 @@ body {
     position: absolute;
     bottom: 0px;
     width: 100%;
-    mix-blend-mode: difference;
     color: #fff;
 }
 
@@ -103,16 +102,11 @@ blockquote::after{
 .btn-secondary{
     font-family: 'Roboto';
     font-size: 14px;
-    background-color: #fff;
-    border-width: 1px;
-    color: #000;
-    border-color: #4762b2;
 }
 
 .btn-primary{
     background-color: #ffffff;
     color: #000;
-    border-color: #668cff;
 }
 
 .btn-primary:hover{
@@ -341,3 +335,11 @@ blockquote::after{
     max-height: 150px;
     overflow: auto;
   }
+
+  /* Add activity modal */
+
+  .scrollable-menu {
+    height: auto;
+    max-height: 180px;
+    overflow-x: hidden;
+}

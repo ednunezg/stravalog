@@ -9,7 +9,6 @@ jQuery(document).ready(function() {
 
 		today_date: new Date(),	   	  					 //date for today
 
-
 		cur_weekID: 0,	   		   	  					 //week # of the top most row in the view. 0 corresponds to week that contains today_date, 1 is last week, etc.
 
 		cur_activity_type: "Run",     					//"Run" or "Ride"
@@ -164,7 +163,8 @@ jQuery(document).ready(function() {
 		            method: "POST",
 		            error: function(data) {
 		                var error = "An error occured trying to fetch strava activities from server API. ";
-		                if (data.responseText) error += "\n\n" + data.responseText;
+		                if (data.responseText) error += "<br>" + data.responseText;
+		                console.log("Error data = " + JSON.stringify(data));
 		                console.log(error);
 		                handleError(error);
 		            },
@@ -179,7 +179,7 @@ jQuery(document).ready(function() {
 
 		function renderCalendar(){
 			//Destroy all currently existing popovers
-			$("[class='cal-cell-day']").popover("dispose");
+			$("[class*='cal-cell-day']").popover("dispose");
 
 			//Render the calendar template
 			var render = calendar_template_file({globals: globals, calendar: calendar});
@@ -188,12 +188,12 @@ jQuery(document).ready(function() {
 			//Detect click on calendar day. Add popover element and display
 			$(".cal-cell-day").click(function(){
 
-				if(this.hasAttribute("popoverOn")){
-					this.removeAttribute("popoverOn");
+				if($(this).hasClass("activated-popover")){
+					$(this).removeClass("activated-popover");
 					$(this).popover("hide");
 				}
 				else{
-					$("[class='cal-cell-day']").popover("hide");
+					$("[class*='cal-cell-day']").popover("hide");
 					$(this).popover({ 
 						html : true,
 						content: renderPopover( parseInt($(this).attr("weekID")), parseInt($(this).attr("dayOfTheWeek"))),
@@ -201,7 +201,7 @@ jQuery(document).ready(function() {
 						animation: false
 					 });
 					$(this).popover("show");
-					this.setAttribute("popoverOn", "");
+					$(this).addClass("activated-popover", "");
 				}
 			});
 
@@ -272,9 +272,11 @@ jQuery(document).ready(function() {
 	StravaCalendar.prototype.changeActivity = function(type) {
 		
 		if(type != this.cur_activity_type){
+			//Swap
 			var temp = this.activities;
 			this.activities = this.activities_othertype;
 			this.activities_othertype = temp;
+			//Change current type
 			this.cur_activity_type = type;
 		}
 
@@ -284,7 +286,7 @@ jQuery(document).ready(function() {
 
 
 	function handleError(err){
-		$( ".container" ).html(err);
+		$( ".container" ).html("<br><center><h3>" + err + "</h3><br><h4><a href='/'>Home </a></h4></center>");
 	}
 
 

@@ -1,13 +1,14 @@
 //Boiler plate
+var quotes = require('./data/quotes.json');
 var express = require('express');
 var session = require('express-session');
 var FileStore = require('session-file-store')(session);
 var bodyParser = require('body-parser');
 var path = require('path');
 var logger = require('morgan');
-var strava = require('strava-v3')
-var date_helpers = require('./public/js/date_helpers')
-var unit_helpers = require('./public/js/unit_helpers')
+var strava = require('strava-v3');
+var date_helpers = require('./public/js/date_helpers');
+var unit_helpers = require('./public/js/unit_helpers');
 
 
 var app = express();
@@ -51,7 +52,7 @@ app.get('/', function(req, res) {
 
 	//Else, we render a page with login URL
 	else{
-		var login_url = strava.oauth.getRequestAccessURL({});
+		var login_url = strava.oauth.getRequestAccessURL({'scope':'write'});
 	  	if(login_url === undefined || login_url === ""){
 	  		throw new Error("Unable to retrieve Strava login URL");
 	  	}
@@ -64,6 +65,7 @@ app.get('/tokenexchange', function(req, res) {
   //Get the access token, save it in session variable, and redirect to training log
   var code = req.query.code;
   strava.oauth.getToken(code,function(err,payload,limits){
+  	console.log("Token exchange payload = " + JSON.stringify(payload));
   	if(err){ throw new Error("Unable to request access token");}
 	req.session.strava_token = payload.access_token;
 	res.redirect('/traininglog');
@@ -79,10 +81,18 @@ app.get('/demo', function(req,res){
 });
 
 app.get('/logout', function(req,res){ //TODO: CHANGE THIS TO POST
-	req.session.destroy();
-	res.redirect('/');
+	
+	// strava.oauth.deauthorize({'access_token':req.session.strava_token},function(err,payload,limits){
+	// 	if(err){ throw new Error("Unable to complete deauthorize request");}
+		req.session.destroy();
+		res.redirect('/');
+	// });
 });
 
+app.get('/retrieve_quote', function(req,res){
+	res.setHeader('Content-Type', 'application/json');
+	res.send(JSON.stringify(quotes[Math.floor(Math.random()*quotes.length)]));
+});
 
 /*
 	retrieve_activities endpoint serves requests for retrieving
@@ -95,6 +105,8 @@ app.get('/logout', function(req,res){ //TODO: CHANGE THIS TO POST
 
 app.post('/retrieve_activities', function(req,res){
 	
+	res.setHeader('Content-Type', 'application/json');
+
 	var todayDate = new Date(req.body.todayDate);
 	var weekID = req.body.weekID;
 	var activityType = req.body.activityType;
@@ -105,10 +117,12 @@ app.post('/retrieve_activities', function(req,res){
 
 	strava.athlete.listActivities( 
 
-		{ 'after':mondayUnixEpoch.toString(), 'before':sundayUnixEpoch.toString() },
+		{ 'after':mondayUnixEpoch.toString(), 'before':sundayUnixEpoch.toString(), 'access_token':req.session.strava_token },
 		function(err,payload,limits){	
-			if(err){ throw new Error("Unable to request athlete activities");}
-		
+
+			if(err){ res.status(500).send(""); return;}
+			if(payload.message){res.status(500).send(payload.message); return;}
+
 			//Filter the payload only with the data we need
 
 			var acts = {};
@@ -123,8 +137,9 @@ app.post('/retrieve_activities', function(req,res){
 				if(payload[i].type == activityType){
 					
 					//Activities are sorted by the day of the week in new filtered payload
-					dayOfTheWeek = new Date(payload[i].start_date_local).getDay();
-					
+					dayOfTheWeek = new Date(payload[i].start_date_local).getDay() - 1;
+					if(dayOfTheWeek == -1) {dayOfTheWeek = 6};
+
 					//Filtered data
 					var cur = {
 						'id': payload[i].id,
@@ -134,7 +149,13 @@ app.post('/retrieve_activities', function(req,res){
 						'total_elevation_gain': payload[i].total_elevation_gain,
 						'moving_time': payload[i].moving_time,
 						'avg_speed': payload[i].avg_speed
-					}
+					};
+
+					console.log("mondayUnixEpoch = " + mondayUnixEpoch);
+					console.log("sundayUnixEpoch = " + sundayUnixEpoch);
+					console.log("day of the week = " + dayOfTheWeek);
+					console.log("start_date_local = " + payload[i].start_date_local);
+					console.log("start_date_local epoch = " + new Date(payload[i].start_date_local).getUnixTime());
 
 					acts.activities[dayOfTheWeek].push(cur);
 					acts.total_week_distance += payload[i].distance;
@@ -146,12 +167,34 @@ app.post('/retrieve_activities', function(req,res){
 			acts.total_week_distance = acts.total_week_distance.toFixed(2);
 			acts.total_week_elevation = acts.total_week_elevation.toFixed(2);
 
-		res.setHeader('Content-Type', 'application/json');
-		res.send(JSON.stringify(acts));
+			console.log("ACTS = " + JSON.stringify(acts));
+
+			res.send(JSON.stringify(acts));
 
 		}
 	);
 	
+});
+
+app.post('/add_activity', function(req,res){
+	res.setHeader('Content-Type', 'application/json');
+
+	var args = JSON.parse(JSON.stringify(req.body));
+	args.access_token = req.session.strava_token;
+
+	console.log("args = " + JSON.stringify(args));
+
+	strava.activities.create( args, function(err,payload,limits){	
+
+			console.log("payload = " + JSON.stringify(payload));
+
+			if(err){ res.status(500).send(""); return;}
+			
+			else if(payload.message){res.status(500).send(payload.message); return;}
+
+			else(res.send({}));
+
+		});
 });
 
 
