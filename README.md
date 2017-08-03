@@ -15,7 +15,7 @@ Running the project
 2. ```$ git clone https://github.com/ednunezg/StravaLog```
 3. Install dependencies ```$ npm install```
 4. Edit the data/strava_config file with your Strava API token, ID and secret
-5. Start app ```$ nodemon app.js```
+5. Start app ```$ nodemon start```
 6. Go to http://localhost:3000
 
 Project issues / Future features
