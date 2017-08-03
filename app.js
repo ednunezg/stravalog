@@ -45,19 +45,19 @@ app.set('view engine', 'ejs');
 app.get('/', function(req, res) {
 
 	//If access token exists in session, redirect to training log page
-	if (req.session.strava_token !== 'undefined' && typeof req.session.strava_token === 'string') {
-		res.redirect('/traininglog');
-		return;
-	}
+	// if (req.session.strava_token !== 'undefined' && typeof req.session.strava_token === 'string') {
+	// 	res.redirect('/traininglog');
+	// 	return;
+	// }
 
 	//Else, we render a page with login URL
-	else{
+	// else{
 		var login_url = strava.oauth.getRequestAccessURL({'scope':'write'});
 	  	if(login_url === undefined || login_url === ""){
 	  		throw new Error("Unable to retrieve Strava login URL");
 	  	}
 	  	res.render('index', { strava_request_access_url: login_url});
-	}
+	// }
 });
 
 app.get('/tokenexchange', function(req, res) {
