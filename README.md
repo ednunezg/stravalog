@@ -7,9 +7,9 @@ This nameless project attempts to provide an easy and streamlined solution to vi
 
 This project is built with node.js on the server side and jQuery/vanillaJS/Bootstrap on the client side.
 
-Available on my website here: http://quiet-reef-29901.herokuapp.com/
+Hosted here: http://stravalog.herokuapp.com/
 
-If you don't have a Strava account, you can access a demo version of the site: <LINK>
+If you don't have a Strava account, you can access a demo version of the site: http://stravalogdemo.herokuapp.com/
 
 Running the project
 --------------------
