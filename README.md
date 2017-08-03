@@ -1,7 +1,7 @@
 A simplified Strava training log
 ==============================================
 
-![](http://i66.tinypic.com/mohn5.png =250x)
+![](http://i66.tinypic.com/mohn5.png)
 
 This nameless project attempts to provide an easy and streamlined solution to viewing a training log of your Strava activities. It is intended to be primarily used as a 'new tab' page in your web browser, but can also be accessed as a regular site.
 
