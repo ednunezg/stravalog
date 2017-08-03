@@ -3,5 +3,5 @@
     "access_token"    :"25c8f166d7fa2102c16402809e1269f7721da324"
     , "client_id"     :"18652"
     , "client_secret" :"805e91cb6812a75c8bbfe89628cb15632f9f8e0c"
-    , "redirect_uri"  :"https://quiet-reef-29901.herokuapp.com/tokenexchange"
+    , "redirect_uri"  :"https://stravalog.herokuapp.com/tokenexchange"
 }
