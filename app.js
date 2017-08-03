@@ -115,6 +115,8 @@ app.post('/retrieve_activities', function(req,res){
 	var mondayUnixEpoch = weekRange.monday.getUnixTime();
 	var sundayUnixEpoch = weekRange.sunday.getUnixTime();
 
+	console.log("Authorization token = " + )
+
 	strava.athlete.listActivities( 
 
 		{ 'after':mondayUnixEpoch.toString(), 'before':sundayUnixEpoch.toString(), 'access_token':req.session.strava_token },
