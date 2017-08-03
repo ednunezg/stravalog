@@ -15,7 +15,8 @@
     "morgan": "~1.8.1",
     "serve-favicon": "~2.4.2",
     "strava-v3": "*",
-    "express-session":"*"
+    "express-session":"*",
+    "session-file-store":"*"
   },
   "devDependencies": {
     "connect-livereload": "^0.6.0"
