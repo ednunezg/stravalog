@@ -1,13 +1,13 @@
-Stravaganza: a simplified Strava training log
+Asimplified Strava training log
 ==============================================
 
-![](http://i66.tinypic.com/mohn5.png)
+![](http://i66.tinypic.com/mohn5.png =250x)
 
-Stravaganza attempts to provide an easy and streamlined solution to viewing a training log of your Strava activities. It is intended to be primarily used as a 'new tab' page in your web browser, but can also be accessed as a regular site.
+This nameless project attempts to provide an easy and streamlined solution to viewing a training log of your Strava activities. It is intended to be primarily used as a 'new tab' page in your web browser, but can also be accessed as a regular site.
 
 This project is built with node.js on the server side and jQuery/vanillaJS/Bootstrap on the client side.
 
-Available on my website here: <LINK>
+Available on my website here: http://quiet-reef-29901.herokuapp.com/
 
 If you don't have a Strava account, you can access a demo version of the site: <LINK>
 
