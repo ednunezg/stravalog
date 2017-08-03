@@ -21,5 +21,5 @@ Running the project
 Project issues / Future features
 --------------------------------
 
-1. Client requests activities on a week to week basis from the server. This can be optimized by having the server giving a JSON response with activities from multiple weeks at a time.
+1. Client requests activities on a week to week basis from the server. This can be optimized by having the server giving a JSON response with activities from multiple weeks at a time for a significantly faster page load.
 2. Accessing the home page should redirect you to the /traininglog page if the server still has your access token cached.
