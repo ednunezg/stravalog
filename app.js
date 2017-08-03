@@ -75,10 +75,6 @@ app.get('/traininglog', function(req,res){
   	res.render('traininglog', {});
 });
 
-app.get('/demo', function(req,res){
-	res.send("Respond with demo");
-});
-
 app.get('/logout', function(req,res){ //TODO: CHANGE THIS TO POST
 	req.session.destroy();
 	res.redirect('/');
