@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www",
+    "start": "node ./bin/www",
     "watch": "DEBUG=stravalog:* nodemon --ignore 'sessions/*"
   },
   "dependencies": {
