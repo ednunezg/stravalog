@@ -25,5 +25,5 @@ Project issues / Future features
 --------------------------------
 
 1. Right now, the client requests a list of activities from the server on a week to week basis. If instead, the server can respond with a list of activities that span across multiple weeks, the page could load significantly faster.
-2. Accessing the home page should redirect you to the /traininglog page if the server still has your access token cached.
+2. Accessing the home page should redirect you to the /traininglog page if the server still has your session stored.
 3. UI could be cleaned up a bit. Background color of each workout bubble can be toned to represent the length of the workout (Dark blue for long runs, light blue for shorter runs).
