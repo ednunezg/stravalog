@@ -1,5 +1,10 @@
 jQuery(document).ready(function() {
 
+	//Disable for mobile
+	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+		handleError("This site is not supported for mobile screens.")
+	}
+
 	//Options to be passed in the calendar 
 	var options = {};
 
