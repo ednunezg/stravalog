@@ -1,6 +1,0 @@
-{
-    "access_token"    :"44d040c1ea58d5a9204c103d517462ca51bee9a3"
-    , "client_id"     :"18652"
-    , "client_secret" :"805e91cb6812a75c8bbfe89628cb15632f9f8e0c"
-    , "redirect_uri"  :"https://stravalog.herokuapp.com/tokenexchange"
-}
