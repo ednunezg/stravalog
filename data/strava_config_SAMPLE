@@ -1,3 +1,5 @@
+//Rename this file to 'strava_config' !!!
+
 {
     "access_token"    :"44d040c1ea58d5a9204c103d517462ca51bee9a3"
     , "client_id"     :"YOUR_CLIENT_ID"
