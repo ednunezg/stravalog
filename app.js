@@ -44,7 +44,7 @@ app.set('view engine', 'ejs');
 app.get('/', function(req, res) {
 
 	//TODO: Redirect to calendar if session already exists
-	var login_url = strava.oauth.getRequestAccessURL({'scope':'write'});
+	var login_url = strava.oauth.getRequestAccessURL({'scope':'read,activity:read,activity:read_all,activity:write'});
 	if(login_url === undefined || login_url === ""){
 		throw new Error("Unable to retrieve Strava login URL");
 	}
